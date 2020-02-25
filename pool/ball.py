@@ -5,10 +5,12 @@ from enum import Enum
 import numpy as np
 import pygame
 
-import collisions
-import config
-import event
-import physics
+import pool.collisions as collisions
+import pool.config as config
+import pool.event as event
+import pool.physics as physics
+
+import json
 
 
 class Ball():
@@ -183,3 +185,7 @@ class BallSprite(pygame.sprite.Sprite):
                     self.move_to(events["mouse_pos"])
             game_state.redraw_all()
         game_state.cue.make_visible(game_state.current_player)
+
+    def get_dict(self):
+        ball = {"color" : self.color, "number" : self.number, "center" : self.ball.pos.tolist()}
+        return ball

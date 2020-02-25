@@ -1,38 +1,51 @@
+import os
+os.environ["SDL_VIDEODRIVER"] = "dummy"
+
 import pygame
 
-import collisions
-import event
-import gamestate
-import graphics
-import config
+import pool.collisions as collisions
+import pool.event as event
+import pool.gamestate as gamestate
+import pool.graphics as graphics
+import pool.config as config
 
-was_closed = False
-while not was_closed:
-    game = gamestate.GameState()
-    button_pressed = graphics.draw_main_menu(game)
+import json
 
-    if button_pressed == config.play_game_button:
-        game.start_pool()
-        events = event.events()
-        while not (events["closed"] or game.is_game_over or events["quit_to_main_menu"]):
-            events = event.events()
-            collisions.resolve_all_collisions(game.balls, game.holes, game.table_sides)
-            game.redraw_all()
+class Game:
+    def __init__(self):
+        self.game = gamestate.GameState()
+        self.output_sprites = None
 
-            if game.all_not_moving():
-                game.check_pool_rules()
-                game.cue.make_visible(game.current_player)
-                while not (
-                    (events["closed"] or events["quit_to_main_menu"]) or game.is_game_over) and game.all_not_moving():
-                    game.redraw_all()
-                    events = event.events()
-                    if game.cue.is_clicked(events):
-                        game.cue.cue_is_active(game, events)
-                    elif game.can_move_white_ball and game.white_ball.is_clicked(events):
-                        game.white_ball.is_active(game, game.is_behind_line_break())
-        was_closed = events["closed"]
+    def _output_sprites(self):
+        sprites = []
+        for sprite in self.game.all_sprites:
+            if len(str(sprite)) > 0:
+                sprites.append(sprite.get_dict())
+        return sprites
 
-    if button_pressed == config.exit_button:
-        was_closed = True
+    def start(self):    
+        self.game.start_pool()
+        self.game.redraw_all()
 
-pygame.quit()
+        self.output_sprites = self._output_sprites()
+
+    def update(self):
+        while not self.game.all_not_moving():
+            collisions.resolve_all_collisions(self.game.balls, self.game.holes, self.game.table_sides)
+            self.game.redraw_all()
+        self.output_sprites = self._output_sprites()
+
+    def move(self, args):
+
+        events = {"angle" : args['angle'],
+                  "displacement" : args['displacement']}
+
+        if self.game.all_not_moving():
+            
+            self.game.check_pool_rules()
+            self.game.cue.make_visible(self.game.current_player)
+
+            while not self.game.is_game_over and self.game.all_not_moving():
+                self.game.redraw_all()
+                self.output_sprites = self._output_sprites()
+                self.game.cue.cue_is_active(self.game, events)

@@ -7,14 +7,14 @@ import numpy as np
 import pygame
 import zope.event
 
-import ball
-import config
-import cue
-import event
-import graphics
-import table_sprites
-from ball import BallType
-from collisions import check_if_ball_touches_balls
+import pool.ball as ball
+import pool.config as config
+import pool.cue as cue
+import pool.event as event
+import pool.graphics as graphics
+import pool.table_sprites as table_sprites
+from pool.ball import BallType
+from pool.collisions import check_if_ball_touches_balls
 
 
 class Player(Enum):
@@ -100,7 +100,7 @@ class GameState:
         self.all_sprites = pygame.sprite.OrderedUpdates()
         self.turn_number = 0
         self.ball_assignment = None
-        self.can_move_white_ball = True
+        self.can_move_white_ball = False
         self.is_game_over = False
         self.potting_8ball = {Player.Player1: False, Player.Player2: False}
         self.table_sides = []
@@ -207,7 +207,7 @@ class GameState:
             else:
                 self.current_player = Player.Player1
         if penalize:
-            self.can_move_white_ball = True
+            self.can_move_white_ball = False
 
     def check_potted(self):
         self.can_move_white_ball = False  # if white ball is potted, it will be created again and placed in the middle

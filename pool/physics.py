@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-import config
+import pool.config as config
 
 
 def point_distance(p1, p2):

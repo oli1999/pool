@@ -1,8 +1,9 @@
 import numpy as np
 import pygame
 
-import config
-import gamestate
+import pool.config as config
+
+import json
 
 
 class Hole(pygame.sprite.Sprite):
@@ -19,6 +20,10 @@ class Hole(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.pos = np.array([x, y])
+
+    def get_dict(self):
+        hole = {"center" : self.pos.tolist()}
+        return hole
 
 
 # this class holds properties of a table side line, but doesn't actually
@@ -83,15 +88,15 @@ class TableColoring(pygame.sprite.Sprite):
 
                 # sorts the balls into their places
                 if do_draw:
-                    if game_state.ball_assignment[gamestate.Player.Player1] == ball.ball_type:
+                    if game_state.ball_assignment[1] == ball.ball_type:
                         draw_to_player.append(1)
                     else:
                         draw_to_player.append(2)
 
                 if ball.number == 8:
-                    if game_state.potting_8ball[gamestate.Player.Player1]:
+                    if game_state.potting_8ball[1]:
                         draw_to_player.append(1)
-                    if game_state.potting_8ball[gamestate.Player.Player2]:
+                    if game_state.potting_8ball[2]:
                         draw_to_player.append(2)
 
                 # draws the balls
@@ -114,3 +119,6 @@ class TableColoring(pygame.sprite.Sprite):
         text_pos = [config.table_margin + config.hole_radius * 3,
                     config.table_margin - self.font.size(top_left_text)[1] / 2]
         self.image.blit(top_left_rendered_text, text_pos)
+
+    def __str__(self):
+        return ""

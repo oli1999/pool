@@ -3,10 +3,9 @@ import math
 import numpy as np
 import pygame
 
-import config
-import event
-import gamestate
-import physics
+import pool.config as config
+import pool.event as event
+import pool.physics as physics
 
 
 class Cue(pygame.sprite.Sprite):
@@ -89,7 +88,7 @@ class Cue(pygame.sprite.Sprite):
         return events["clicked"] and self.is_point_in_cue(events["mouse_pos"])
 
     def make_visible(self, current_player):
-        if current_player == gamestate.Player.Player1:
+        if current_player == 1:
             self.color = config.player1_cue_color
         else:
             self.color = config.player2_cue_color
@@ -100,13 +99,22 @@ class Cue(pygame.sprite.Sprite):
         self.visible = False
 
     def cue_is_active(self, game_state, events):
-        initial_mouse_pos = events["mouse_pos"]
-        initial_mouse_dist = physics.point_distance(
-            initial_mouse_pos, self.target_ball.ball.pos)
+        try:
+            self.angle = events['angle']
+            print(self.angle, events["displacement"])
+            self.displacement = events["displacement"]
+        except KeyError:
+            try:
+                initial_mouse_pos = events["mouse_pos"]
+                initial_mouse_dist = physics.point_distance(
+                    initial_mouse_pos, self.target_ball.ball.pos)
+            
+                while events["clicked"]:
+                    events = event.events()
+                    self.update_cue(game_state, initial_mouse_dist, events)
+            except KeyError:
+                pass
 
-        while events["clicked"]:
-            events = event.events()
-            self.update_cue(game_state, initial_mouse_dist, events)
         # undraw leftover aiming lines
         self.draw_lines(game_state, self.target_ball, self.angle +
                         math.pi, config.table_color)
@@ -145,3 +153,7 @@ class Cue(pygame.sprite.Sprite):
         self.draw_lines(game_state, self.target_ball, self.angle +
                         math.pi, (255, 255, 255))
         pygame.display.flip()
+
+    def get_dict(self):
+        cue = {"angle" : self.angle, "displacement" : self.displacement}
+        return cue
