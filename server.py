@@ -6,6 +6,7 @@ from pool.main import Game
 parser = reqparse.RequestParser()
 parser.add_argument('angle', type=float)
 parser.add_argument('displacement', type=int)
+parser.add_argument('player', type=int)
 
 app = Flask(__name__)
 api = Api(app)

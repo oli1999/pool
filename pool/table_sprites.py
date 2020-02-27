@@ -88,6 +88,7 @@ class TableColoring(pygame.sprite.Sprite):
 
                 # sorts the balls into their places
                 if do_draw:
+                    print(game_state.ball_assignment)
                     if game_state.ball_assignment[1] == ball.ball_type:
                         draw_to_player.append(1)
                     else:

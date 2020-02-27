@@ -1,7 +1,6 @@
 import itertools
 import math
 import random
-from enum import Enum
 
 import numpy as np
 import pygame
@@ -15,12 +14,7 @@ import pool.graphics as graphics
 import pool.table_sprites as table_sprites
 from pool.ball import BallType
 from pool.collisions import check_if_ball_touches_balls
-
-
-class Player(Enum):
-    Player1 = 1
-    Player2 = 2
-
+from pool.player import Player
 
 class GameState:
     def __init__(self):

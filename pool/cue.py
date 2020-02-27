@@ -6,6 +6,7 @@ import pygame
 import pool.config as config
 import pool.event as event
 import pool.physics as physics
+from pool.player import Player
 
 
 class Cue(pygame.sprite.Sprite):
@@ -88,7 +89,7 @@ class Cue(pygame.sprite.Sprite):
         return events["clicked"] and self.is_point_in_cue(events["mouse_pos"])
 
     def make_visible(self, current_player):
-        if current_player == 1:
+        if current_player == Player.Player1:
             self.color = config.player1_cue_color
         else:
             self.color = config.player2_cue_color
