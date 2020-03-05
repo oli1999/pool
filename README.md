@@ -137,3 +137,7 @@ Based on the current state you would generally need to be able to change it with
 In order to handle the cue you would need to send a `POST` request to `localhost:5000/?displacement=42&angle=-1.54` in order to push the white ball with 42 displacement (this translates in the game engine to force) and in a `-1.54` radian angle (this is the horizontal push to the right).
 
 After the request succeeded you get back the new state of the field.
+
+### General info
+
+The field is `[500, 1000]` in size.
