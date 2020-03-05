@@ -158,7 +158,8 @@ class BallSprite(pygame.sprite.Sprite):
         self.rect.center = self.ball.pos.tolist()
 
     def create_image(self, surface, coords):
-        surface.blit(self.image, coords)
+        #surface.blit(self.image, coords)
+        pass
 
     def is_clicked(self, events):
         return physics.distance_less_equal(events["mouse_pos"], self.ball.pos, config.ball_radius)
@@ -183,7 +184,7 @@ class BallSprite(pygame.sprite.Sprite):
                         self.move_to(events["mouse_pos"])
                 else:
                     self.move_to(events["mouse_pos"])
-            game_state.redraw_all()
+            game_state.redraw_all(update=False)
         game_state.cue.make_visible(game_state.current_player)
 
     def get_dict(self):

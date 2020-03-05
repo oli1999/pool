@@ -32,7 +32,8 @@ class Game:
     def update(self):
         while not self.game.all_not_moving():
             collisions.resolve_all_collisions(self.game.balls, self.game.holes, self.game.table_sides)
-            self.game.redraw_all()
+            self.game.redraw_all(update=False)
+        self.game.redraw_all()
         self.output_sprites = self._output_sprites()
 
     def move(self, args):
@@ -46,6 +47,7 @@ class Game:
             self.game.cue.make_visible(self.game.current_player)
 
             while not self.game.is_game_over and self.game.all_not_moving():
-                self.game.redraw_all()
-                self.output_sprites = self._output_sprites()
+                self.game.redraw_all(update=False)
                 self.game.cue.cue_is_active(self.game, events)
+
+        self.output_sprites = self._output_sprites()

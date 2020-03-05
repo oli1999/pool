@@ -10,7 +10,7 @@ class GameEvent():
 
 def set_allowed_events():
     # only allow keypress events to avoid waisting cpu type on checking useless events
-    pygame.event.set_allowed([pygame.KEYDOWN, pygame.QUIT])
+    pygame.event.set_allowed([])
 
 def events():
     closed = False

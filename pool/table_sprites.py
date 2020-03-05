@@ -2,6 +2,7 @@ import numpy as np
 import pygame
 
 import pool.config as config
+from pool.player import Player
 
 import json
 
@@ -88,16 +89,15 @@ class TableColoring(pygame.sprite.Sprite):
 
                 # sorts the balls into their places
                 if do_draw:
-                    print(game_state.ball_assignment)
-                    if game_state.ball_assignment[1] == ball.ball_type:
+                    if game_state.ball_assignment[Player.Player1] == ball.ball_type:
                         draw_to_player.append(1)
                     else:
                         draw_to_player.append(2)
 
                 if ball.number == 8:
-                    if game_state.potting_8ball[1]:
+                    if game_state.potting_8ball[Player.Player1]:
                         draw_to_player.append(1)
-                    if game_state.potting_8ball[2]:
+                    if game_state.potting_8ball[Player.Player2]:
                         draw_to_player.append(2)
 
                 # draws the balls

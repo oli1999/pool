@@ -29,7 +29,7 @@ class GameState:
         return self.fps_clock.get_fps()
 
     def mark_one_frame(self):
-        self.fps_clock.tick(config.fps_limit)
+        self.fps_clock.tick(1e6)
 
     def create_white_ball(self):
         self.white_ball = ball.BallSprite(0)

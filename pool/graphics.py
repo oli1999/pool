@@ -1,5 +1,6 @@
 import numpy as np
 import pygame
+from pygame.locals import *
 
 import pool.config as config
 import pool.event as event
@@ -9,7 +10,8 @@ class Canvas:
     def __init__(self):
         if config.fullscreen:
             config.set_max_resolution()
-            self.surface = pygame.display.set_mode(config.resolution, pygame.FULLSCREEN)
+            self.surface = pygame.display.set_mode(config.resolution, pygame.FULLSCREEN | pygame.DOUBLEBUF, bpp)
+            self.surface.set_alpha(None)
         else:
             self.surface = pygame.display.set_mode(config.resolution)
         self.background = pygame.Surface(self.surface.get_size())
